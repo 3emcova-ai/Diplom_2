@@ -35,8 +35,17 @@ def user_get_access_token(email, password):
 def user_delete(access_token):
     return requests.delete(f'{Urls.STELLAR_BURGERS_URL}{Urls.DELETE_USER}/{access_token}')
 
+@allure.step('Получаю данные об ингредиентах')
+def get_ingredients():
+    return requests.get(f"{Urls.STELLAR_BURGERS_URL}{Urls.GET_INGREDIENTS}")
 
-
+@allure.step('Создаю заказ')
+def create_order(ingredients, access_token=None):
+    headers = {}
+    if access_token:
+        headers["Authorization"] = access_token
+    payload = {"ingredients": ingredients}
+    return requests.post(f"{Urls.STELLAR_BURGERS_URL}{Urls.CREATE_ORDER}", json=payload, headers=headers)
 
 
 
