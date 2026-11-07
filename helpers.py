@@ -17,11 +17,33 @@ def generate_user_data():
 def user_creation(user_data):
     return requests.post(f'{Urls.STELLAR_BURGERS_URL}{Urls.CREATE_USER}', json=user_data)
 
+@allure.step('Осуществляю авторизацию пользователя')
+def user_login(email, password):
+    return requests.post(f'{Urls.STELLAR_BURGERS_URL}{Urls.LOGIN_USER}', json={
+    'email': email,
+    'password': password
+    })
+
+@allure.step('Получаю accessToken зарегистрированного пользователя')
+def user_get_access_token(email, password):
+    response_access_token = user_login(email, password)
+    if response_access_token.status_code == 200:
+        return response_access_token.json()['accessToken']
+    return None
+
+@allure.step('Удаляю пользователя')
+def user_delete(access_token):
+    return requests.delete(f'{Urls.STELLAR_BURGERS_URL}{Urls.DELETE_USER}/{access_token}')
 
 
 
 
-@allure.step('Осуществляю авторизацию курьера')
+
+
+
+
+
+@allure.step('Осуществляю авторизацию пользователя')
 def courier_login(login, password):
     return requests.post(f'{Urls.SCOOTER_URL}{Urls.LOGIN_COURIER}', json={
     'login': login,

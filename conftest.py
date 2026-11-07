@@ -1,6 +1,6 @@
 import pytest
 
-from helpers import generate_user_data, courier_delete, courier_creation_and_return_login_password
+from helpers import generate_user_data, user_delete, courier_creation_and_return_login_password
 
 
 @pytest.fixture
@@ -9,7 +9,7 @@ def delete_user_after_test():
     yield user_tokens
     for access_token in user_tokens:
         if access_token:
-            courier_delete(access_token)
+            user_delete(access_token)
 
 
 

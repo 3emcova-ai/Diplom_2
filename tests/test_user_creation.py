@@ -22,12 +22,11 @@ class TestUserCreation:
         user_data = generate_user_data()
         response_user = user_creation(user_data)
         assert response_user.status_code == 200
-        access_token = response_user.json()["accessToken"]
         response_duplicate_user = user_creation(user_data)
         assert response_duplicate_user.status_code == 403 
         assert response_duplicate_user.json()["success"] is False
         assert response_duplicate_user.json()["message"] == ResponseMessages.DUPLICATE_USER
-        delete_user_after_test.append(access_token)
+        delete_user_after_test.append(response_duplicate_user.json()["accessToken"])
 
     @allure.title("Ошибка при создании пользователя при передаче в ручку не всех обязательных полей")
     @pytest.mark.parametrize(

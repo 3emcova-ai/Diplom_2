@@ -7,3 +7,4 @@ class Urls:
 class ResponseMessages:
    DUPLICATE_USER = 'User already exists'
    ERROR_CREATE_WITHOUT_REQUIRED_FIELD = 'Email, password and name are required fields'
+   ERROR_INCORRECT_LOGIN_PASSWORD = 'email or password are incorrect'

@@ -6,15 +6,22 @@ from faker import Faker
 
 fake = Faker()
 
-# Генераторы для курьера
-def login_generator():
-    return fake.user_name()
+# Генераторы для пользователя
+def email_generator():
+    return fake.email()
 
 def password_generator():
     return fake.password()
 
-def firstname_generator():
-    return fake.first_name()
+def name_generator():
+    return fake.name()
+
+
+
+
+
+
+
 
 # Генераторы для заказа
 def lastname_generator():
