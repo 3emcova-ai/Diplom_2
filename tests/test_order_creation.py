@@ -1,15 +1,15 @@
 import allure
 
 from data import ResponseMessages
-from helpers import get_ingredients, create_order
+from helpers import create_order
 
 
 class TestOrderCreation:
 
     @allure.title("Создание заказа авторизованным пользователем")
-    def test_order_create_authoriz_user(self, registered_user, return_ingredients, delete_user_after_test):
-        user_data = registered_user["data"]
-        access_token = registered_user["token"]
+    def test_order_create_authoriz_user(self, create_user_and_registred, return_ingredients, delete_user_after_test):
+        user_data = create_user_and_registred["data"]
+        access_token = create_user_and_registred["token"]
         response_order = create_order(return_ingredients, access_token)
         assert response_order.status_code == 200
         assert response_order.json()["success"] is True
@@ -19,19 +19,15 @@ class TestOrderCreation:
         delete_user_after_test.append(access_token)
         
     @allure.title("Создание заказа не авторизованным пользователем")
-    def test_order_create_unauthoriz_user(self):
-        response_ingredients = get_ingredients()
-        assert response_ingredients.status_code == 200
-        ingredients_data = response_ingredients.json()["data"]
-        ingredient_ids = [ingredients_data[0]["_id"], ingredients_data[1]["_id"]]
-        response_order = create_order(ingredient_ids)
+    def test_order_create_unauthoriz_user(self, return_ingredients):
+        response_order = create_order(return_ingredients)
         assert response_order.status_code == 200
         assert response_order.json()["success"] is True
         assert response_order.json()["order"].get("owner") is None
 
     @allure.title("Создание заказа c ингредиентами авторизованным пользователем")
-    def test_order_create_authoriz_user_with_ingr(self, registered_user, return_ingredients, delete_user_after_test):
-        access_token = registered_user["token"]
+    def test_order_create_authoriz_user_with_ingr(self, create_user_and_registred, return_ingredients, delete_user_after_test):
+        access_token = create_user_and_registred["token"]
         response_order = create_order(return_ingredients, access_token)
         assert response_order.status_code == 200
         assert response_order.json()["success"] is True
@@ -40,18 +36,20 @@ class TestOrderCreation:
         delete_user_after_test.append(access_token)
 
     @allure.title("Создание заказа без ингредиентов авторизованным пользователем")
-    def test_order_create_authoriz_user_without_ingr_shows_error(self, registered_user, delete_user_after_test):
-        access_token = registered_user["token"]
+    def test_order_create_authoriz_user_without_ingr_shows_error(self, create_user_and_registred, delete_user_after_test):
+        access_token = create_user_and_registred["token"]
         response_order = create_order([], access_token)
         assert response_order.status_code == 400
         assert response_order.json()["success"] is False
-        assert response_order.json()["message"] == ResponseMessages.ERRORR_ORDER_WITHOUT_INGREDIENTS
+        assert response_order.json()["message"] == ResponseMessages.ERROR_ORDER_WITHOUT_INGREDIENTS
         delete_user_after_test.append(access_token)
 
     @allure.title("Создание заказа с неверным хешем ингредиента авторизованным пользователем")
-    def test_order_create_authoriz_user_with_invalid_ingr_shows_error(self, registered_user, delete_user_after_test):
-        access_token = registered_user["token"]
-        invalid_ingr = "66ccc55777ddf000000aaa00"    
-        response_order = create_order([invalid_ingr], access_token)
-        assert response_order.status_code == 500
+    def test_order_create_authoriz_user_with_invalid_ingr_shows_error(self, create_user_and_registred, delete_user_after_test):
+        access_token = create_user_and_registred["token"]
+        incorrect_ingr = "66ccc55777ddf000000aaa00"    
+        response_order = create_order([incorrect_ingr], access_token)
+        assert response_order.status_code == 400
+        assert response_order.json()["success"] is False
+        assert response_order.json()["message"] == ResponseMessages.ERROR_INCORRECT_INGREDIENT
         delete_user_after_test.append(access_token)

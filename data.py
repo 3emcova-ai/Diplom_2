@@ -10,4 +10,5 @@ class ResponseMessages:
    DUPLICATE_USER = 'User already exists'
    ERROR_CREATE_WITHOUT_REQUIRED_FIELD = 'Email, password and name are required fields'
    ERROR_INCORRECT_LOGIN_PASSWORD = 'email or password are incorrect'
-   ERRORR_ORDER_WITHOUT_INGREDIENTS = 'Ingredient ids must be provided'
+   ERROR_ORDER_WITHOUT_INGREDIENTS = 'Ingredient ids must be provided'
+   ERROR_INCORRECT_INGREDIENT = 'One or more ids provided are incorrect'

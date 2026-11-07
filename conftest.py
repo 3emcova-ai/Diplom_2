@@ -12,7 +12,7 @@ def delete_user_after_test():
             user_delete(access_token)
 
 @pytest.fixture
-def create_user_and_registration():
+def create_user_and_registred():
     user_data = generate_user_data()
     response = user_creation(user_data)
     assert response.status_code == 200, f"Ошибка создания пользователя: {response.text}"
