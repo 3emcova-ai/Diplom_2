@@ -12,3 +12,7 @@ class ResponseMessages:
    ERROR_INCORRECT_LOGIN_PASSWORD = 'email or password are incorrect'
    ERROR_ORDER_WITHOUT_INGREDIENTS = 'Ingredient ids must be provided'
    ERROR_INCORRECT_INGREDIENT = 'One or more ids provided are incorrect'
+
+class TestData:
+   INCORRECT_INGR = '66ccc55777ddf000000aaa00'
+   

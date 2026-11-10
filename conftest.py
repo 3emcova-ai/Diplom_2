@@ -12,13 +12,14 @@ def delete_user_after_test():
             user_delete(access_token)
 
 @pytest.fixture
-def create_user_and_registred():
+def create_registred_delete_user():
     user_data = generate_user_data()
     response = user_creation(user_data)
     assert response.status_code == 200, f"Ошибка создания пользователя: {response.text}"
     access_token = response.json()["accessToken"]
     assert access_token is not None, "Токен не получен от сервера"
-    return {"data": user_data, "token": access_token}
+    yield {"data": user_data, "token": access_token}
+    user_delete(access_token)
 
 @pytest.fixture
 def return_ingredients():
